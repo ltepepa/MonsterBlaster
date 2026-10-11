@@ -4,6 +4,8 @@ A spooky, family-friendly arcade game that runs in the browser. Ghosts, bats, pu
 
 **▶ Play it here: [Monster Blaster](https://monsterblaster-ltepepa-b7a9dsetergvcuh6.westus3-01.azurewebsites.net/)**
 
+[![Monster Blaster gameplay: the kid with a bazooka and a rescued German Shepherd faces ghosts, a pumpkin, a bat and a zombie on three graveyard paths, while the cheer squad watches from the hill](images/screenshot.png)](https://monsterblaster-ltepepa-b7a9dsetergvcuh6.westus3-01.azurewebsites.net/)
+
 ## How to play
 
 Stop the monsters before they reach you. Each one that gets past costs you a heart, and the game ends when all 3 hearts are gone. Score enough points and a boss shows up to end the level.
@@ -36,7 +38,7 @@ Stop the monsters before they reach you. Each one that gets past costs you a hea
 
 ## Running it locally
 
-There's nothing to install or build. Clone the repo and open `monster-blaster.html` in your browser.
+There's nothing to install or build. Clone the repo and open `index.html` in your browser.
 
 You can also serve the folder with any static web server, for example:
 
@@ -44,12 +46,13 @@ You can also serve the folder with any static web server, for example:
 python -m http.server 8000
 ```
 
-Then go to http://localhost:8000/monster-blaster.html.
+Then go to http://localhost:8000.
 
 ## Project structure
 
 ```
-monster-blaster.html   Page layout; loads the stylesheet and scripts
+index.html             Page layout; loads the stylesheet and scripts
+images/screenshot.png  Screenshot used in this README
 css/style.css          All styling
 js/
   core.js         Canvas setup, lanes, shared helpers, best score
