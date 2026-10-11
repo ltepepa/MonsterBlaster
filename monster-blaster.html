@@ -2,7 +2,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Creepster&family=Fredoka:wght@400;600;700&display=swap">
 <style>
-/* test. Layout: one arcade cabinet — title, game screen, control strip. Single dark "haunted night" look in every theme. */
+/* test checkin. Layout: one arcade cabinet — title, game screen, control strip. Single dark "haunted night" look in every theme. */
 :root {
   --night: #140f2b;
   --night-2: #221a45;
@@ -344,6 +344,46 @@ kbd {
         for (const d of [0, 0.2]) { const o = osc('sawtooth', 190, t + d, 0.15, 0.12, A.sfx); o.frequency.exponentialRampToValueAtTime(120, t + d + 0.15); }
       } else {
         const o = osc('triangle', 200, t, 0.45, 0.25, A.sfx, 0.05); o.frequency.linearRampToValueAtTime(320, t + 0.4);
+      }
+    },
+    // a different sound for each monster type; killed = final hit
+    monsterHit(type, killed) {
+      if (!A.ctx) return; const t = A.ctx.currentTime, C = A.ctx;
+      const v = 0.9 + Math.random() * 0.2; // small random pitch change so hits don't sound identical
+      if (type === 'ghost') {
+        // spooky "wooOOooo" wail with a wobble
+        const o = osc('sine', 420 * v, t, 0.6, 0.22, A.sfx, 0.04);
+        o.frequency.linearRampToValueAtTime(760 * v, t + 0.18);
+        o.frequency.exponentialRampToValueAtTime(260 * v, t + 0.6);
+        const lfo = C.createOscillator(), lg = C.createGain();
+        lfo.frequency.value = 9; lg.gain.value = 30; lfo.connect(lg); lg.connect(o.frequency);
+        lfo.start(t); lfo.stop(t + 0.65);
+      } else if (type === 'pumpkin') {
+        // hollow "BONK" followed by a wet splat
+        const o = osc('sine', 260 * v, t, 0.22, 0.45, A.sfx, 0.003);
+        o.frequency.exponentialRampToValueAtTime(110 * v, t + 0.2);
+        noise(t, 0.06, 0.3, A.sfx, 500, 'bandpass');
+        noise(t + 0.08, 0.18, 0.25, A.sfx, 700, 'lowpass');
+      } else if (type === 'bat') {
+        // three quick high squeaks
+        for (const d of [0, 0.07, 0.14]) {
+          const o = osc('square', 1700 * v, t + d, 0.05, 0.07, A.sfx, 0.004);
+          o.frequency.exponentialRampToValueAtTime(2600 * v, t + d + 0.05);
+        }
+      } else if (type === 'zombie') {
+        if (killed) {
+          // long dying groan "uuurrrgh"
+          const o = osc('sawtooth', 130 * v, t, 0.8, 0.14, A.sfx, 0.06);
+          o.frequency.exponentialRampToValueAtTime(55 * v, t + 0.8);
+          const lfo = C.createOscillator(), lg = C.createGain();
+          lfo.frequency.value = 14; lg.gain.value = 12; lfo.connect(lg); lg.connect(o.frequency);
+          lfo.start(t); lfo.stop(t + 0.85);
+          noise(t, 0.5, 0.15, A.sfx, 350, 'lowpass');
+        } else {
+          // short annoyed "UGH!"
+          const o = osc('sawtooth', 170 * v, t, 0.2, 0.15, A.sfx, 0.01);
+          o.frequency.exponentialRampToValueAtTime(110 * v, t + 0.2);
+        }
       }
     },
     level() {
@@ -740,10 +780,10 @@ kbd {
             game.score += TYPES[m.type].pts;
             burst(m.x, my, COLORS[m.type]);
             game.texts.push({ x: m.x, y: my - 30, s: WORDS[Math.floor(Math.random() * WORDS.length)], life: 45 });
-            game.shake = reduceMotion ? 0 : 8; sfx.boom(); cheer(m.type === 'zombie' ? 2 : 1);
+            game.shake = reduceMotion ? 0 : 8; sfx.boom(); sfx.monsterHit(m.type, true); cheer(m.type === 'zombie' ? 2 : 1);
             if (!game.boss && game.score >= game.goal) startBoss();
           } else {
-            m.x += 18; burst(r.x, my, ['#ffe066', '#ffffff'], 8); sfx.clang();
+            m.x += 18; burst(r.x, my, ['#ffe066', '#ffffff'], 8); sfx.clang(); sfx.monsterHit(m.type, false);
           }
         }
       }
