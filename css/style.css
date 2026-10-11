@@ -1,0 +1,76 @@
+/* ltepepa checkin. Layout: one arcade cabinet — title, game screen, control strip. Single dark "haunted night" look in every theme. */
+:root {
+  --night: #140f2b;
+  --night-2: #221a45;
+  --ink: #f3eefe;
+  --muted: #b7acd9;
+  --slime: #8cf25a;
+  --pumpkin: #ff8a1f;
+  --danger: #ff4d6d;
+  --display: "Creepster", "Fredoka", system-ui, cursive;
+  --body: "Fredoka", "Trebuchet MS", system-ui, sans-serif;
+  color-scheme: dark;
+}
+[hidden] { display: none !important; }
+html, body { height: 100%; }
+body {
+  background: radial-gradient(ellipse at 50% -10%, var(--night-2), var(--night) 60%) fixed, var(--night);
+  color: var(--ink);
+  font-family: var(--body);
+  padding-inline: 16px;
+  padding-block: 16px 24px;
+  box-sizing: border-box;
+}
+.wrap { max-width: 960px; margin: 0 auto; display: grid; gap: 14px; }
+header { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+h1 {
+  font-family: var(--display); font-weight: 400; margin: 0;
+  font-size: clamp(2.2rem, 7vw, 3.6rem); letter-spacing: .04em; line-height: 1;
+  color: var(--slime); text-shadow: 0 3px 0 #2d5a12, 0 0 24px rgba(140,242,90,.35);
+  text-wrap: balance;
+}
+.tag { color: var(--muted); font-size: 1rem; }
+.screen {
+  position: relative; width: 100%; aspect-ratio: 16 / 9; max-width: 100%;
+  border-radius: 18px; overflow: hidden;
+  border: 4px solid #3a2d70; box-shadow: 0 0 0 4px #0b0818, 0 18px 50px rgba(0,0,0,.5);
+  touch-action: none; user-select: none;
+}
+canvas { display: block; width: 100%; height: 100%; }
+.overlay {
+  position: absolute; inset: 0; display: grid; place-items: center; text-align: center;
+  background: rgba(12, 8, 30, .72); backdrop-filter: blur(2px); padding: 16px;
+}
+.panel { display: grid; gap: 12px; justify-items: center; max-width: 34rem; }
+.panel h2 {
+  font-family: var(--display); font-weight: 400; margin: 0; letter-spacing: .05em;
+  font-size: clamp(2rem, 6vw, 3.4rem); color: var(--pumpkin); text-shadow: 0 3px 0 #6b2f00;
+}
+.panel p { margin: 0; font-size: clamp(.95rem, 2.4vw, 1.15rem); color: var(--ink); line-height: 1.4; }
+.big {
+  font: 700 clamp(1.1rem, 3vw, 1.4rem) var(--body); color: #1a1033; background: var(--slime);
+  border: 0; border-radius: 999px; padding: .6em 1.6em; cursor: pointer;
+  box-shadow: 0 5px 0 #3f7a1f; transition: transform .08s;
+}
+.big:active { transform: translateY(3px); box-shadow: 0 2px 0 #3f7a1f; }
+.big:focus-visible, .tbtn:focus-visible, .chip:focus-visible { outline: 3px solid var(--pumpkin); outline-offset: 3px; }
+.keys { display: flex; flex-wrap: wrap; gap: 10px 18px; justify-content: center; color: var(--muted); font-size: .95rem; }
+kbd {
+  font: 600 .9rem var(--body); color: var(--ink); background: #2c2358; border: 1px solid #4a3d8a;
+  border-bottom-width: 3px; border-radius: 6px; padding: 1px 7px;
+}
+.bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
+.chip {
+  font: 600 .95rem var(--body); color: var(--ink); background: #2c2358; border: 1px solid #4a3d8a;
+  border-radius: 999px; padding: .4em 1em; cursor: pointer;
+}
+.touch { display: none; gap: 10px; }
+.tbtn {
+  font: 700 1.1rem var(--body); color: var(--ink); background: #2c2358; border: 2px solid #4a3d8a;
+  border-radius: 16px; min-width: 64px; min-height: 56px; cursor: pointer; touch-action: manipulation;
+}
+.tbtn.fire { background: var(--danger); border-color: #b3203d; min-width: 110px; color: #fff; }
+@media (pointer: coarse) { .touch { display: flex; } }
+.legend { display: flex; flex-wrap: wrap; gap: 8px 16px; color: var(--muted); font-size: .9rem; }
+.legend b { color: var(--ink); font-weight: 600; }
+@media (prefers-reduced-motion: reduce) { .big { transition: none; } }
