@@ -6,16 +6,18 @@ const BOSS_LOOKS = [
   { name: 'MOTHER MAGGOT', body: '#7f9a6c', belly: '#c4d6b2', shade: '#55704a' },
   { name: 'THE GUZZLER', body: '#a87482', belly: '#dcb5bc', shade: '#784955' },
 ];
+const FINAL_BOSS_LOOK = { name: 'KING ROTTENGUT', body: '#6b2a44', belly: '#b9708c', shade: '#45172b', crown: true };
 
 function startBoss() {
   for (const m of game.monsters) burst(m.x, LANES[m.lane] - 20, ['#b7acd9', '#ffffff'], 10);
   game.monsters = [];
+  const final = game.level >= FINAL_LEVEL;
   game.boss = {
     x: W + 130, y: LANES[1] - 35, dir: Math.random() < 0.5 ? -1 : 1, hp: BOSS_HP, hit: 0, mouth: 0,
-    cool: 90, entering: true, dying: 0, blink: 0, look: BOSS_LOOKS[(game.level - 1) % BOSS_LOOKS.length],
+    cool: 90, entering: true, dying: 0, blink: 0, look: final ? FINAL_BOSS_LOOK : BOSS_LOOKS[(game.level - 1) % BOSS_LOOKS.length],
     speed: 1.3 + game.level * 0.25,
   };
-  game.texts.push({ x: W / 2, y: 230, s: 'BOSS FIGHT!', life: 110, big: true, bad: true });
+  game.texts.push({ x: W / 2, y: 230, s: final ? 'FINAL BOSS!' : 'BOSS FIGHT!', life: 110, big: true, bad: true });
   sfx.roar();
   SQUAD.forEach((c, i) => say(c, ['Mamma mia!', 'So BIG!', 'Eek! Eek!'][i]));
 }
@@ -69,7 +71,15 @@ function defeatBoss() {
   const b = game.boss;
   burst(b.x, b.y, [b.look.body, b.look.belly, '#8cf25a', '#ffe066', '#ff4d6d'], 60);
   game.boss = null; game.shake = reduceMotion ? 0 : 18;
-  game.score += 100; game.level++;
+  game.score += 100;
+  if (game.level >= FINAL_LEVEL) {
+    // the last evil boss is gone: celebrate, then roll the ending
+    sfx.level(); cheerAll(); game.shots = [];
+    game.texts.push({ x: W / 2, y: 200, s: 'VICTORY!', life: 120, big: true });
+    game.ending = 150;
+    return;
+  }
+  game.level++;
   game.goal = game.score + 120 + (game.level - 1) * 30;
   sfx.level(); cheerAll();
   game.texts.push({ x: W / 2, y: 200, s: 'BOSS DEFEATED! +100', life: 100, big: true });
@@ -98,6 +108,14 @@ function drawBoss(b) {
   // the huge fat body
   ellipse(0, 0, 86, 74, L.body);
   ellipse(10, 20, 62, 48, L.belly);
+  if (L.crown) {
+    // the final boss wears a crooked gold crown
+    ctx.save(); ctx.rotate(-0.12); ctx.fillStyle = '#ffd23f';
+    ctx.beginPath(); ctx.moveTo(-34, -64); ctx.lineTo(-38, -104); ctx.lineTo(-18, -84); ctx.lineTo(0, -112);
+    ctx.lineTo(18, -84); ctx.lineTo(38, -104); ctx.lineTo(34, -64); ctx.closePath(); ctx.fill();
+    ellipse(0, -76, 6, 6, '#ff4d6d'); ellipse(-22, -72, 4, 4, '#4cc9f0'); ellipse(22, -72, 4, 4, '#8cf25a');
+    ctx.restore();
+  }
   // fat rolls
   ctx.strokeStyle = L.shade; ctx.lineWidth = 3; ctx.lineCap = 'round';
   ctx.beginPath(); ctx.arc(0, 24, 80, Math.PI * 1.18, Math.PI * 1.82); ctx.stroke();

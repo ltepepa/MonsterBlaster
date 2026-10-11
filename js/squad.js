@@ -65,7 +65,7 @@ function drawBombardiro(p) {
   const x = p.x, y = p.y + Math.sin(game.t * 0.05) * 6;
   // banner trailing behind
   ctx.font = '700 15px Fredoka, system-ui, sans-serif';
-  const text = 'GO GO BLASTER!', tw = ctx.measureText(text).width + 22;
+  const text = p.text || 'GO GO BLASTER!', tw = ctx.measureText(text).width + 22;
   const bx = x + 70, wob = Math.sin(game.t * 0.2) * 3;
   ctx.strokeStyle = '#d8dbe8'; ctx.lineWidth = 1.5;
   ctx.beginPath(); ctx.moveTo(x + 36, y); ctx.lineTo(bx, y - 10 + wob); ctx.moveTo(x + 36, y); ctx.lineTo(bx, y + 10 + wob); ctx.stroke();

@@ -41,7 +41,12 @@ function drawBackground() {
 }
 
 function drawKid() {
-  const k = game.kid, x = KID_X - k.recoil, y = k.y + Math.sin(game.t * 0.15) * 1.5;
+  const k = game.kid;
+  drawKidFigure(KID_X - k.recoil, k.y + Math.sin(game.t * 0.15) * 1.5, { recoil: k.recoil });
+}
+
+// The kid standing at (x, y). bazooka: false draws empty arms instead (used by the cutscene).
+function drawKidFigure(x, y, o = {}) {
   ellipse(x, y + 12, 26, 6, 'rgba(0,0,0,.3)');
   // legs + sneakers
   rr(x - 12, y - 14, 9, 24, 4, '#2b4fa8'); rr(x + 3, y - 14, 9, 24, 4, '#2b4fa8');
@@ -57,6 +62,7 @@ function drawKid() {
   ellipse(x + 6, y - 66, 3, 3.5, '#1a1033'); ellipse(x + 13, y - 66, 3, 3.5, '#1a1033');
   ellipse(x + 7, y - 67, 1, 1, '#fff'); ellipse(x + 14, y - 67, 1, 1, '#fff');
   ctx.strokeStyle = '#1a1033'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(x + 9, y - 59, 5, 0.2, Math.PI - 0.2); ctx.stroke();
+  if (o.bazooka === false) { if (o.arms !== 'none') drawKidArms(x, y, o.arms); return; }
   // bazooka on shoulder
   rr(x - 30, y - 34, 92, 18, 7, '#4f8a3a');
   rr(x + 52, y - 37, 14, 24, 4, '#3d6d2c');
@@ -66,11 +72,23 @@ function drawKid() {
   // hand
   ellipse(x + 4, y - 20, 6, 6, '#f6c49b');
   // muzzle flash
-  if (k.recoil > 4) {
+  if (o.recoil > 4) {
     ctx.fillStyle = '#ffe066'; ctx.beginPath();
     for (let i = 0; i < 10; i++) { const a = i * Math.PI / 5, r = i % 2 ? 8 : 18; ctx.lineTo(x + 74 + Math.cos(a) * r, y - 25 + Math.sin(a) * r); }
     ctx.fill();
   }
+}
+
+// Empty arms for the kid: 'hug' reaches forward, 'up' cheers, anything else hangs down.
+function drawKidArms(x, y, pose) {
+  const arm = (sx, sy, ex, ey) => {
+    ctx.strokeStyle = '#ff4d6d'; ctx.lineWidth = 9; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(sx, sy); ctx.lineTo(ex, ey); ctx.stroke();
+    ellipse(ex, ey, 5.5, 5.5, '#f6c49b');
+  };
+  if (pose === 'hug') { arm(x + 8, y - 44, x + 40, y - 50); arm(x - 10, y - 40, x + 36, y - 32); }
+  else if (pose === 'up') { const w = Math.sin(game.t * 0.3) * 4; arm(x - 12, y - 44, x - 26, y - 76 + w); arm(x + 12, y - 44, x + 26, y - 76 - w); }
+  else { arm(x - 12, y - 44, x - 18, y - 20); arm(x + 12, y - 44, x + 18, y - 20); }
 }
 
 function drawRocket(r) {

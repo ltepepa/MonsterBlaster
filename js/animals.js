@@ -1,4 +1,8 @@
 // Rescued animals: freed after each boss, then follow the kid as sidekicks.
+function showLevelBanner() {
+  game.texts.push({ x: W / 2, y: 270, s: 'LEVEL ' + game.level + '!', life: 110, big: true });
+}
+
 function updateRescue(f) {
   const r = game.rescue, k = game.kid;
   if (!r) return;
@@ -24,7 +28,7 @@ function updateRescue(f) {
     }
     if (r.t > 170) {
       r.phase = 'follow'; r.hop = 0; r.bubble = null; game.spawn = 60;
-      game.texts.push({ x: W / 2, y: 270, s: 'LEVEL ' + game.level + '!', life: 110, big: true });
+      showLevelBanner();
     }
   } else {
     // sidekick: trots along behind the kid

@@ -16,7 +16,8 @@ function loop(now) {
   if (game.state !== 'pause') updateSquad(f);
   if (game.state === 'play') update(f);
   else if (game.state === 'title') { game.t += f; for (const m of game.monsters) m.phase += 0.05 * f; }
-  render();
+  else if (game.state === 'cutscene') { game.t += f; updateCutscene(f); }
+  if (game.state === 'cutscene') drawCutscene(); else render();
   requestAnimationFrame(loop);
 }
 requestAnimationFrame(loop);

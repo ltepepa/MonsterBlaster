@@ -36,9 +36,11 @@
         <button class="big" id="resumeBtn" type="button">Keep blasting</button>
       </div>
     </div>
+    <button class="chip skip" id="skipBtn" type="button" hidden>Skip ⏭</button>
+    <p class="sr-only" id="csCaption" aria-live="polite"></p>
     <div class="overlay" id="overOverlay" hidden>
       <div class="panel">
-        <h2>The monsters got by!</h2>
+        <h2 id="overTitle">The monsters got by!</h2>
         <p id="overText">You scored 0 points.</p>
         <button class="big" id="againBtn" type="button">Play again</button>
       </div>
@@ -56,7 +58,7 @@
       <span><b>Pumpkin</b> 10 pts</span>
       <span><b>Bat</b> 15 pts, fast</span>
       <span><b>Zombie</b> 25 pts, needs 2 hits</span>
-      <span><b>Boss</b> ends every level, 10 hits, 100 pts. Dodge or shoot its slime!</span>
+      <span><b>Boss</b> ends every level, 10 hits, 100 pts. Dodge or shoot its slime! Beat the 7th and final boss to win.</span>
       <span><b>Rescues</b> every boss sets a trapped animal free: German Shepherd, Kitten, Bunny, Piglet, Penguin, Panda Cub</span>
       <span><b>Cheer squad</b> Tung Tung Tung Sahur, Tralalero Tralala, Ballerina Cappuccina, Bombardiro Crocodilo</span>
     </div>
@@ -73,6 +75,7 @@
 <script src="js/monsters.js"></script>
 <script src="js/boss.js"></script>
 <script src="js/animals.js"></script>
+<script src="js/cutscene.js"></script>
 <script src="js/squad.js"></script>
 <script src="js/scene.js"></script>
 <script src="js/game.js"></script>

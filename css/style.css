@@ -74,3 +74,5 @@ kbd {
 .legend { display: flex; flex-wrap: wrap; gap: 8px 16px; color: var(--muted); font-size: .9rem; }
 .legend b { color: var(--ink); font-weight: 600; }
 @media (prefers-reduced-motion: reduce) { .big { transition: none; } }
+.skip { position: absolute; top: 12px; right: 12px; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }

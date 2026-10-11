@@ -8,7 +8,7 @@ A spooky, family-friendly arcade game that runs in the browser. Ghosts, bats, pu
 
 ## How to play
 
-Stop the monsters before they reach you. Each one that gets past costs you a heart, and the game ends when all 3 hearts are gone. Score enough points and a boss shows up to end the level.
+Stop the monsters before they reach you. Each one that gets past costs you a heart, and the game ends when all 3 hearts are gone. Score enough points and a boss shows up to end the level. There are 7 levels: beat the final evil boss at the end of level 7 to win the game.
 
 ### Controls
 
@@ -28,10 +28,12 @@ Stop the monsters before they reach you. Each one that gets past costs you a hea
 | Bat | 15 | Fast; shows up from level 2 |
 | Zombie | 25 | Takes 2 hits; shows up from level 3 |
 | Boss | 100 | Ends every level, takes 10 hits, and spits slime you can dodge or shoot |
+| King Rottengut | 100 | The crowned final boss at the end of level 7 |
 
 ### Extras
 
 - **Animal rescues:** each boss you defeat sets a trapped animal free (German Shepherd, Kitten, Bunny, Piglet, Penguin, Panda Cub), and it follows you as a sidekick.
+- **The ending:** defeat the final boss and every animal you rescued celebrates with you. They play together, run home to their families, share a giant feast and throw a big thank-you party for you. Then the game ends with a **Game Over: You Win!** screen. Press **Skip** or `Esc` to jump straight to it.
 - **Cheer squad:** Tung Tung Tung Sahur, Tralalero Tralala and Ballerina Cappuccina cheer you on from the hill, while Bombardiro Crocodilo flies by with a banner.
 - **Music and sound effects:** a spooky soundtrack and sound effects for every monster, all generated live in the browser.
 - **Best score:** your high score is saved in your browser.
@@ -62,6 +64,7 @@ js/
   monsters.js     Spawning and drawing the regular monsters
   boss.js         Boss behaviour, slime shots and health bar
   animals.js      Rescued animals and their animations
+  cutscene.js     The animated ending after the final boss
   squad.js        The cheer squad and the banner plane
   scene.js        Background, kid, rockets, score bar and per-frame drawing
   game.js         Start, pause, game over, firing and per-frame updates

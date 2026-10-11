@@ -228,6 +228,15 @@ const sfx = {
       }
     }
   },
+  chomp() {
+    if (!A.ctx) return; const t = A.ctx.currentTime;
+    for (const d of [0, 0.13]) { noise(t + d, 0.07, 0.35, A.sfx, 700, 'lowpass'); osc('square', 180, t + d, 0.05, 0.06, A.sfx); }
+  },
+  boing() {
+    if (!A.ctx) return; const t = A.ctx.currentTime;
+    const o = osc('sine', 300, t, 0.25, 0.25, A.sfx);
+    o.frequency.exponentialRampToValueAtTime(700, t + 0.08); o.frequency.exponentialRampToValueAtTime(400, t + 0.25);
+  },
   level() {
     if (!A.ctx) return; const t = A.ctx.currentTime;
     [69, 72, 76, 81].forEach((n, i) => osc('triangle', mtof(n), t + i * 0.08, 0.2, 0.2, A.sfx));

@@ -12,12 +12,15 @@ function pause(p) {
   $('pauseOverlay').hidden = !p;
   if (p) stopMusic(); else startMusic();
 }
-function gameOver() {
-  game.state = 'over'; stopMusic(); sfx.over();
+function gameOver(won = false) {
+  game.state = 'over'; stopMusic();
+  if (won) sfx.level(); else sfx.over();
   const newBest = game.score > best;
   if (newBest) { best = game.score; try { localStorage.setItem('mb-best', best); } catch (e) {} }
-  $('overText').textContent = `You scored ${game.score} points and reached level ${game.level}.` + (newBest ? ' That is a new best score!' : ` Best: ${best}.`)
-    + (game.rescued.length ? ` Animals you rescued: ${game.rescued.join(', ')}.` : '');
+  $('overTitle').textContent = won ? 'Game Over: You Win!' : 'The monsters got by!';
+  $('overText').textContent = (won ? `You beat all ${FINAL_LEVEL} levels and saved every animal from the evil monsters! You scored ${game.score} points.`
+    : `You scored ${game.score} points and reached level ${game.level}.`) + (newBest ? ' That is a new best score!' : ` Best: ${best}.`)
+    + (game.rescued.length && !won ? ` Animals you rescued: ${game.rescued.join(', ')}.` : '');
   $('overOverlay').hidden = false;
   setTimeout(() => $('againBtn').focus(), 50);
 }
@@ -59,6 +62,7 @@ function update(f) {
   updateRescue(f);
   const rescuing = game.rescue && game.rescue.phase !== 'follow';
   if (game.boss) updateBoss(f);
+  else if (game.ending) { if ((game.ending -= f) <= 0) startEnding(); }
   else if (!rescuing && (game.spawn -= f) <= 0) {
     spawnMonster();
     game.spawn = Math.max(42, 115 - game.level * 9) * (0.7 + Math.random() * 0.6);

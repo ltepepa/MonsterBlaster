@@ -2,6 +2,7 @@
 addEventListener('keydown', e => {
   const k = e.key.toLowerCase();
   if ([' ', 'arrowup', 'arrowdown'].includes(k) && e.target.tagName !== 'BUTTON') e.preventDefault();
+  if (game.state === 'cutscene' && k === 'escape') return endEnding();
   if (game.state === 'title' && (k === ' ' || k === 'enter') && e.target.tagName !== 'BUTTON') return start();
   if (k === 'arrowup' || k === 'w') move(-1);
   else if (k === 'arrowdown' || k === 's') move(1);
@@ -22,5 +23,6 @@ $('screen').addEventListener('pointerdown', e => {
 $('startBtn').addEventListener('click', start);
 $('againBtn').addEventListener('click', start);
 $('resumeBtn').addEventListener('click', () => pause(false));
+$('skipBtn').addEventListener('click', e => { endEnding(); e.currentTarget.blur(); });
 $('muteBtn').addEventListener('click', e => { setMuted(!A.muted); e.currentTarget.blur(); });
 document.addEventListener('visibilitychange', () => { if (document.hidden && game.state === 'play') pause(true); });
